@@ -24,6 +24,7 @@ prepend(srcs_ddsc "${CMAKE_CURRENT_LIST_DIR}/src/"
   dds_domain.c
   dds_instance.c
   dds_qos.c
+  dds_record.c
   dds_handles.c
   dds_entity.c
   dds_matched.c
@@ -108,6 +109,7 @@ prepend(hdrs_public_ddsc "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>$<
   ddsc/dds_rhc.h
   ddsc/dds_internal_api.h
   ddsc/dds_opcodes.h
+  ddsc/dds_record.h
   ddsc/dds_loaned_sample.h
   ddsc/dds_psmx.h
   ddsc/dds_data_type_properties.h
