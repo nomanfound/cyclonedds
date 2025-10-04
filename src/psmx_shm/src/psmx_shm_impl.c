@@ -238,7 +238,7 @@ static dds_psmx_topic_t *psmx_shm_create_topic_with_type(dds_psmx_t *psmx, const
   }
 
   // Set size of shared memory
-  if (ftruncate(topic->shm_fd, topic->shm_size) == -1)
+  if (ftruncate(topic->shm_fd, (off_t)topic->shm_size) == -1)
   {
     fprintf(stderr, "ftruncate failed: %s\n", strerror(errno));
     goto fail_ftruncate;
@@ -488,7 +488,7 @@ static dds_loaned_sample_t *psmx_shm_take(dds_psmx_endpoint_t *psmx_endpoint)
     if (seq <= endpoint->last_read_seq)
       continue;
 
-    uint32_t idx = seq % topic->segment->sample_count;
+    uint32_t idx = (uint32_t)(seq % topic->segment->sample_count);
     shm_sample_header_t *header = get_sample_header(topic->segment, idx, topic->type_size);
 
     if (header->sequence == seq)
