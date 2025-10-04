@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Example CycloneDDS configuration for PSMX Shared Memory Plugin
+  
+  To use this configuration:
+  1. Save this file as cyclonedds.xml
+  2. Set environment variable: export CYCLONEDDS_URI=file://$(pwd)/cyclonedds.xml
+  3. Run your DDS application
+-->
+<CycloneDDS xmlns="https://cdds.io/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://cdds.io/config https://raw.githubusercontent.com/eclipse-cyclonedds/cyclonedds/master/etc/cyclonedds.xsd">
+  <Domain id="any">
+    <!-- Enable PSMX Shared Memory Plugin -->
+    <PubSubMessageExchanges>
+      <PubSubMessageExchange name="shm" library="libpsmx_shm" priority="0">
+        <!-- 
+          ServiceName: Prefix for shared memory segment names
+          Default: "default_shm"
+          
+          Each topic will create a shared memory segment named:
+          /cyclonedds_shm_{ServiceName}_{TopicName}
+        -->
+        <ServiceName>my_app</ServiceName>
+      </PubSubMessageExchange>
+    </PubSubMessageExchanges>
+    
+    <!-- Optional: Configure tracing for debugging -->
+    <Tracing>
+      <Verbosity>config</Verbosity>
+      <Category>trace</Category>
+      <!-- Uncomment to enable file output -->
+      <!-- <OutputFile>cyclonedds.log</OutputFile> -->
+    </Tracing>
+    
+    <!-- Optional: Disable multicast for local-only communication -->
+    <Discovery>
+      <Peers>
+        <Peer address="localhost"/>
+      </Peers>
+    </Discovery>
+  </Domain>
+</CycloneDDS>
