@@ -55,15 +55,15 @@ endif()
 target_link_libraries(recorder CycloneDDS::ddsc dds_topic_descriptor_serde mcap)
 
 
-# add_executable(replayer dds_replayer.cpp)
+add_executable(replayer dds_replayer.cpp)
 
-# if(TARGET CycloneDDS::ddsc)
-#   target_include_directories(replayer
-#     PRIVATE
-#     "${CMAKE_CURRENT_SOURCE_DIR}/../../src/core/cdr/include"
-#     "${CMAKE_CURRENT_SOURCE_DIR}/../../src/core/ddsi/include")
-# endif()
-# target_link_libraries(replayer CycloneDDS::ddsc dds_topic_descriptor_serde mcap)
+if(TARGET CycloneDDS::ddsc)
+  target_include_directories(replayer
+    PRIVATE
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../src/core/cdr/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../src/core/ddsi/include")
+endif()
+target_link_libraries(replayer CycloneDDS::ddsc dds_topic_descriptor_serde mcap)
 
 # force to ignore many compile warnings in mcap...
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "AppleClang")
@@ -77,12 +77,13 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "Apple
   )
   target_compile_options(mcap PRIVATE ${disable_flags})
   target_compile_options(recorder PRIVATE ${disable_flags})
-  # target_compile_options(replayer PRIVATE ${disable_flags})
+  target_compile_options(replayer PRIVATE ${disable_flags})
 endif()
 
 if(MSVC)
   target_compile_options(mcap PRIVATE /wd4251 /WX-)
   target_compile_options(recorder PRIVATE /wd4251 /WX-)
+  target_compile_options(replayer PRIVATE /wd4251 /WX-)
 endif()
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
@@ -94,6 +95,7 @@ if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
       )
       target_compile_options(mcap PRIVATE ${disable_flags})
       target_compile_options(recorder PRIVATE ${disable_flags})
+      target_compile_options(replayer PRIVATE ${disable_flags})
     endif()
   endif()
 endif()
